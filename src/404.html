@@ -1,0 +1,13 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>MicroFoodScan</title>
+<script>
+  (function () {
+    try {
+      sessionStorage.setItem('mfs-redirect', location.href);
+    } catch (error) {
+      void error;
+    }
+    location.replace('./');
+  })();
+</script>
