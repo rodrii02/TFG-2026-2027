@@ -1,6 +1,5 @@
 # Dependencias y artefactos de Angular
 node_modules/
-dist/
 .angular/
 out-tsc/
 coverage/

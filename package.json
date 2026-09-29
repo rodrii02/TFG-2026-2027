@@ -1,5 +1,5 @@
 {
-  "name": "clarifica",
+  "name": "microfoodscan",
   "version": "0.1.0",
   "private": true,
   "description": "Lectura local de matrices de señales LFA. Prototipo de TFG pendiente de calibración.",
