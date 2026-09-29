@@ -1,0 +1,4 @@
+Pyodide 314.0.7 — MPL-2.0. Source: https://github.com/pyodide/pyodide/tree/314.0.7
+Pyodide license: LICENSE-PYODIDE.txt. Python 3.14.2 license: LICENSE-PYTHON.txt.
+Python wheels are distributed unmodified with their original dist-info licenses.
+Pillow, NumPy and OpenCV versions and SHA-256 hashes: manifest.json and pyodide-lock.json.
