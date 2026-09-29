@@ -1,0 +1,25 @@
+<app-step-heading [step]="store.state().phase === 'empty' ? 1 : 2" title="Fotografía la matriz." description="Haz una foto o elige una imagen. Incluye la matriz completa y utiliza la iluminación indicada en el protocolo del ensayo." />
+<input #fileInput type="file" accept="image/jpeg,image/png,image/webp" class="sr-only" tabindex="-1" aria-label="Seleccionar imagen de la matriz" (change)="fileChange($event)" (cancel)="cancelled()">
+<div class="capture-grid">
+  <div class="drop-area" [class.dragging]="dragging()" (dragover)="drag($event)" (dragleave)="dragging.set(false)" (drop)="drop($event)"><app-photo-preview [image]="store.state().image" /></div>
+  <div class="capture-controls"><div class="source-buttons">
+    <ion-button class="secondary" expand="block" [disabled]="store.state().phase === 'analyzing' || cameraBusy()" (click)="upload()"><app-icon name="cloud-upload-outline" />{{store.state().phase === 'empty' ? 'Cargar imagen' : 'Elegir otra imagen'}}</ion-button>
+    <ion-button class="secondary" expand="block" [disabled]="store.state().phase === 'analyzing' || cameraBusy() || !supportsCamera" (click)="camera()"><app-icon name="camera-outline" />{{store.state().phase === 'empty' ? 'Hacer foto' : 'Repetir foto'}}</ion-button>
+  </div>
+    <p class="micro muted capture-hint">{{platform.native ? 'Selecciona una foto en el selector de imágenes del dispositivo.' : 'También puedes arrastrar una imagen al recuadro.'}}</p>
+    @if (!supportsCamera) { <p class="micro">La cámara necesita HTTPS y un navegador compatible. Puedes cargar una imagen.</p> }
+    <app-image-review [acquiring]="cameraBusy()" />
+  </div>
+</div>
+@if (cameraBusy()) { <p role="status" class="busy-status">Esperando la cámara o el selector de imágenes…</p> }
+@if (pickerOpen()) { <button class="text-button" (click)="cancelled()">Cancelar selección</button> }
+@if (notice()) { <p role="status" class="micro">{{notice()}}</p> }
+@if (error()) { <div class="error-notice" role="alert"><app-icon name="alert-circle-outline" /><span>{{error()}} Puedes volver a usar los botones de cámara o selección.</span></div> }
+<div class="capture-bottom"><p class="scope-note"><app-icon name="lock-closed-outline" />Tu imagen se procesa solo en este dispositivo.</p><button class="text-button example-button" [disabled]="store.busy() || cameraBusy()" (click)="example()">Probar con una imagen de ejemplo<app-icon name="arrow-forward-outline" /></button></div>
+@if (store.state().image?.source === 'example') { <p class="notice micro" role="status">Matriz sintética para probar el recorrido. Su geometría es ilustrativa. No representa un ensayo ni una detección real de micotoxinas.</p> }
+<dialog #cameraDialog class="camera-dialog" aria-labelledby="camera-title" (cancel)="closeCamera()" (close)="closeCamera()">
+  <div class="dialog-heading"><h2 id="camera-title">Encuadra la matriz</h2><button class="icon-button" aria-label="Cerrar cámara" (click)="closeCamera()"><app-icon name="close-outline" /></button></div>
+  <p>Incluye la matriz completa y mantén la cámara estable. Sigue las condiciones de captura del protocolo.</p>
+  <video #video autoplay playsinline muted (loadeddata)="cameraReady.set(true)"></video>
+  <div class="button-row"><ion-button class="secondary" (click)="closeCamera()">Cancelar</ion-button><ion-button [disabled]="!cameraReady() || cameraBusy()" (click)="takePhoto()"><app-icon name="camera-outline" />Capturar foto</ion-button></div>
+</dialog>

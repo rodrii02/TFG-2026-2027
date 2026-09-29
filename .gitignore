@@ -1,0 +1,27 @@
+# Dependencias y artefactos de Angular
+node_modules/
+dist/
+.angular/
+out-tsc/
+coverage/
+playwright-report/
+test-results/
+
+# Sistema
+.DS_Store
+*.log
+
+# Carpetas no necesarias para la parte web
+android/
+ios/
+docs/
+
+# Archivos nativos / secretos
+android/.gradle/
+android/local.properties
+android/**/build/
+ios/App/Pods/
+ios/App/App/public/
+android/app/src/main/assets/public/
+*.keystore
+*.jks
